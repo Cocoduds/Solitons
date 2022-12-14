@@ -16,6 +16,12 @@ stepsizeEuler = 1
 def KdeV(x,a,t):
     return 12*a**2*(1/(np.cosh(a*(x-4*(a**2)*t)))**2)
 
+def sin(x,t,a):
+    if 0< x or x <2*np.pi: 
+        return a*np.sin(x+t)
+    else:
+        return 0
+
 
 def rk4(x, dt, dx):   #REWRITE THIS
     k1 = dt * uprime(x, dx)
@@ -47,7 +53,8 @@ def rungeKutta(xn, stepSize, h): #alpha = 1/2
 
 #%% initial condition
 x = np.linspace(0,20,100)
-u = KdeV(x, a, 1) + KdeV(x, 0.8, 4)
+#u = KdeV(x, a, 1) + KdeV(x, 0.8, 4)
+u = sin(x,1,1)
 plt.plot(x,u)
 
 
