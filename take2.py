@@ -47,7 +47,7 @@ def rungeKutta(xn, stepSize, h): #alpha = 1/2
 
 #%% initial condition
 x = np.linspace(0,20,100)
-u = KdeV(x, a, 1) + KdeV(x, 0.8, 5)
+u = KdeV(x, a, 1) + KdeV(x, 0.8, 4)
 plt.plot(x,u)
 
 
