@@ -44,51 +44,84 @@ def uprime(x, h):
     return -(wavespeed(x,h) + dispersion(x,h))
 
 #%% Dynamics plots
-plt.figure(1)
-h=0.1
-xmin=-5
-xmax=5
-x = np.linspace(int(xmin),int(xmax),int((xmax-xmin)/h))
-u = KdeV(x, 1.2, 0)
-plt.plot(x,u)
-dt=0.001
-maxes = []
-times=[]
-for i in range (0, 10000):
-    u = RK4(u, dt, h)
-    maxes.append(np.max(u))
-    times.append(i*dt)
-    if i%200 == 0:
-        plt.plot(x,u, label = str(i*0.001))
-        plt.show()
-plt.legend()        
-plt.show()
-
-#%% heights
-# plt.figure(2)
-# plt.scatter(times,maxes)
-# plt.ylim([0,15])
-# plt.show()
-
-#%% Speed vs height
+# plt.figure(1)
 # h=0.1
 # xmin=-5
 # xmax=10
 # x = np.linspace(int(xmin),int(xmax),int((xmax-xmin)/h))
+# u = KdeV(x, 1, 0)
+# plt.plot(x,u)
 # dt=0.001
-# maxes=[]
-# speeds=[]
-# for i in np.arange(0.5,1.5,0.2):
-#     u=KdeV(x,i,0)
-#     plt.plot(x,u, label = str(2*i/10))
-#     for j in range (0, 1000):
-#         u = RK4(u, dt, h)
+# maxes = []
+# times=[]
+# for i in range (0, 2000):
+#     u = RK4(u, dt, h)
 #     maxes.append(np.max(u))
-#     speeds.append(maxes.index(np.max(u)))
-#     plt.plot(x,u, label = str(j*0.001), linestyle='dashed')
+#     times.append(i*dt)
+#     if i%600 == 0:
+#         plt.plot(x,u, label = 't = '+str(i*0.001))
+# plt.legend()
+# plt.xlabel('Distance') 
+# plt.ylabel('Amplitude')   
+# plt.title('The Dynamics of a Single Soliton')     
 # plt.show()
-# plt.figure(4)
-# plt.scatter(maxes,speeds)
+       
+
+
+#%% heights
+# plt.figure(2)
+# plt.plot(times,maxes)
+# plt.ylim([0,15])
+# plt.xlabel('Time')
+# plt.ylabel('Amplitude')   
+# plt.title('Ampitude of a Single Soliton Over 2 Time Units')         
+# plt.show()
+
+#%% Speed vs height
+h=0.1
+xmin=-5
+xmax=10
+x = np.linspace(int(xmin),int(xmax),int((xmax-xmin)/h))
+dt=0.001
+maxes=[]
+speeds=[]
+colors = ['blue', 'orange', 'red', 'green', 'purple']
+for i in [0.5, 0.7, 0.9 ,1.1 , 1.3]:
+    u=KdeV(x,i,0)
+    plt.plot(x,u,  label = 'α = '+str(i), color=colors[int((i-0.4)*5)])
+    for j in range (0, 1000):
+        u = RK4(u, dt, h)
+    maxes.append(np.max(u))
+    speed = (np.where(np.isclose(u, np.max(u))))
+    speeds.append(speed[0][0]/10-5)
+    plt.plot(x,u, linestyle='dashed', color=colors[int((i-0.4)*5)])
+plt.xlabel('Distance')
+plt.ylabel('Displacement')   
+plt.title('The Varying Speeds of Different Size Solitons')     
+plt.legend()
+
+plt.show()
+
+maxestheory=[]
+speedstheory=[]
+for i in np.arange(0.1,1.5,0.2):
+    u=KdeV(x,i,0)
+    plt.plot(x,u, label = str(2*i/10))
+    u=KdeV(x,i,1)
+    maxestheory.append(np.max(u))
+    speed = (np.where(np.isclose(u, np.max(u))))
+    speedstheory.append(speed[0][0]/10-5)
+    plt.plot(x,u, label = str(j*0.001), linestyle='dashed')
+
+
+plt.figure(4)
+
+plt.plot(maxestheory,speedstheory, linestyle='dashed', label = 'Theoretical relation')    
+plt.scatter(maxes,speeds, label = 'Numerical values')
+plt.xlabel('Amplitude')
+plt.ylabel('Speed (Arbitrary Units)')   
+plt.title('Speed of Solitons in Respect to Amplitude')     
+plt.legend()
 
 #%% Collisions plots
 # h=0.1
